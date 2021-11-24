@@ -10,8 +10,9 @@ import { NzTreeComponent } from 'ng-zorro-antd/tree';
     <nz-transfer
       [nzDataSource]="list"
       [nzShowSelectAll]="false"
-      [nzRenderList]="[leftRenderList, null]"
+      [nzRenderList]="[leftRenderList, leftRenderList2]"
       (nzChange)="change($event)"
+      (nzSelectChange)="select($event)"
       [nzItemUnit]="' '"
       [nzItemsUnit]="' '"
       [nzTitles]="['Users', 'Assigned users']"
@@ -65,7 +66,7 @@ import { NzTreeComponent } from 'ng-zorro-antd/tree';
             class="ant-tree-checkbox"
             [class.ant-tree-checkbox-disabled]="n.isDisabled"
             [class.ant-tree-checkbox-checked]="n.isChecked"
-            (click)="checkBoxChange(n, onItemSelect)"
+            (click)="onItemSelect(n)"
           >
             <span class="ant-tree-checkbox-inner"></span>
           </span>
@@ -172,6 +173,10 @@ export class NzDemoTransferTreeTransferComponent {
     return tree;
   }
 
+  select(e): void {
+    console.log(e);
+  }
+
   checkBoxChange(
     node: NzTreeNode,
     onItemSelect: (item: NzTreeNodeOptions) => void
@@ -210,7 +215,7 @@ export class NzDemoTransferTreeTransferComponent {
     this.list = this.list.map((n) => {
       return {
         ...n,
-        direction: 'right',
+        direction: ret.to,
       };
     });
     this.checkedNodeList.forEach((node) => {
